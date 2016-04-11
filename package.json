@@ -1,0 +1,31 @@
+{
+  "name": "learn-react-webpack",
+  "version": "0.1.0",
+  "description": "Learning how React and webpack work together",
+  "main": "app.js",
+  "scripts": {
+    "test": "test",
+    "start": "npm run serve | npm run dev",
+    "serve": "./node_modules/.bin/http-server -p 8080",
+    "dev": "webpack-dev-server --progress --colors --port 8090"
+  },
+  "author": "Ian Nicholas",
+  "license": "ISC",
+  "dependencies": {
+    "babel-preset-react": "^6.5.0",
+    "bootstrap": "^3.3.6",
+    "react": "^15.0.1",
+    "react-dom": "^15.0.1"
+  },
+  "devDependencies": {
+    "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "http-server": "^0.9.0",
+    "jsx-loader": "^0.13.2",
+    "less": "^2.6.1",
+    "less-loader": "^2.2.3",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.12.14",
+    "webpack-dev-server": "^1.14.1"
+  }
+}
