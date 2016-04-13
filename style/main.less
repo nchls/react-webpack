@@ -1,5 +1,6 @@
 @bootstrap-path: "../node_modules/bootstrap/less/";
 
+/*
 // Core variables and mixins
 @import "@{bootstrap-path}variables.less";
 @import "@{bootstrap-path}mixins.less";
@@ -49,3 +50,57 @@
 // Utility classes
 @import "@{bootstrap-path}utilities.less";
 @import "@{bootstrap-path}responsive-utilities.less";
+*/
+
+
+html {
+    background: #333;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+body {
+    margin: 0;
+}
+ol {
+    padding: 0;
+}
+li {
+    list-style: none;
+}
+.columns {
+    display: flex;
+    align-content: stretch;
+    justify-content: space-around;
+
+    h2,
+    h3 {
+        margin: 0;
+    }
+}
+
+.column {
+    width: 100%;
+    padding: 1em;
+    background: #345;
+    &:nth-child(2n) {
+        background: #456;
+    }
+}
+
+.column-name {
+    background: transparent;
+    border: 0;
+    width: 100%;
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #fff;
+}
+
+.card {
+    color: #333;
+    background: #eef;
+    border-radius: 0.5em;
+    box-shadow: 0 0 0.5em rgba(0,0,0,1);
+    padding: 1em;
+    margin: 1em 0;
+}
