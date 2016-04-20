@@ -3,12 +3,13 @@
 var React = require('react');
 var _ = require('lodash');
 
+var actions = require('../app/actions.js');
 var store = require('../app/store.js');
 var api = require('../app/api.js');
-var EventListenerMixin = require('./EventListenerMixin.jsx');
+//var EventListenerMixin = require('./EventListenerMixin.jsx');
 var Column = require('./Column.jsx');
 
-module.exports = React.createClass(_.assign({}, EventListenerMixin, {
+module.exports = React.createClass({
     displayName: 'Board',
 
     getInitialState() {
@@ -18,50 +19,37 @@ module.exports = React.createClass(_.assign({}, EventListenerMixin, {
         };
     },
 
-    getCardsInColumn: function(cards, columnIndex) {
+    getCardsInColumn: function(cards, columnId) {
         return cards.filter(function(card) {
-            return card.column === columnIndex;
+            return card.columnId === columnId;
         });
     },
+
+    unsubscribe: function() {},
 
     componentWillMount: function() {
         var self = this;
 
-        self.addPropListener('columns', function() {
-            self.setState({
-                columns: store.state.columns
-            });
-        });
-
-        self.addPropListener('cards', function() {
-            self.setState({
-                cards: store.state.cards
-            });
+        self.unsubscribe = store.subscribe(function() {
+            self.setState(store.getState());
         });
 
         api.get().then(function(data) {
-            store.set({
-                columns: data.columns,
-                cards: data.cards
+            _.forEach(data.columns, function(column) {
+                store.dispatch(actions.addColumn(column.id, column.name));
             });
-        });
-
-        store.emitter.addListener('moveCard', function(cardId, cardDirection) {
-            var cards = _.clone(self.state.cards);
-            var cardIdx = _.findIndex(cards, {id: cardId});
-            if (cardDirection === 'left') {
-                cards[cardIdx].column--;
-            } else {
-                cards[cardIdx].column++;
-            }
-            self.setState({
-                cards: cards
+            _.forEach(data.cards, function(card) {
+                store.dispatch(actions.addCard(card.id, card.name, card.columnId));
             });
         });
     },
 
+    componentWillUnmount() {
+        this.unsubscribe();
+    },
+
     handleAddColumn: function() {
-        store.push('columns', {name: null});
+        store.dispatch(actions.addColumn(undefined, ''));
     },
 
     render: function() {
@@ -74,10 +62,10 @@ module.exports = React.createClass(_.assign({}, EventListenerMixin, {
             </div>
             <ol className="columns">
                 {this.state.columns.map(function(column, columnIndex) {
-                    var columnCards = self.getCardsInColumn(self.state.cards, columnIndex);
-                    return <Column name={column.name} key={columnIndex} index={columnIndex} cards={columnCards}/>;
+                    var columnCards = self.getCardsInColumn(self.state.cards, column.id);
+                    return <Column name={column.name} key={column.id} index={columnIndex} id={column.id} cards={columnCards}/>;
                 })}
             </ol>
         </div>
     }
-}));
+});

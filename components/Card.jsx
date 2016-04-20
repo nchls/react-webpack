@@ -3,22 +3,30 @@
 var React = require('react');
 
 var store = require('../app/store.js');
+var actions = require('../app/actions.js');
 
 module.exports = React.createClass({
     displayName: 'Card',
 
     handleClickMoveLeft: function() {
-        store.emitter.emit('moveCard', this.props.id, 'left');
+        var columnId = store.getState().columns[this.props.columnIndex - 1].id;
+        store.dispatch(actions.moveCard(this.props.id, columnId));
     },
 
     handleClickMoveRight: function() {
-        store.emitter.emit('moveCard', this.props.id, 'right');
+        var columnId = store.getState().columns[this.props.columnIndex + 1].id;
+        store.dispatch(actions.moveCard(this.props.id, columnId));
+    },
+
+    handleNameChange: function(event) {
+        var self = this;
+        store.dispatch(actions.renameCard(self.props.id, event.target.value));
     },
 
     render: function() {
-        var columnsCount = store.state.columns.length;
+        var columnsCount = store.getState().columns.length;
         return <li className="card">
-            <h3>{this.props.label}</h3>
+            <input className="card-name" value={this.props.name} onChange={this.handleNameChange} />
             {(this.props.columnIndex > 0 ?
                 <button className="move-left" onClick={this.handleClickMoveLeft}>Move left</button>
             : null)}
