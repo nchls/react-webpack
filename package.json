@@ -9,15 +9,16 @@
   },
   "scripts": {
     "test": "test",
-    "start": "npm run serve | npm run dev",
+    "start": "npm run serve | npm run api | npm run webpack",
     "serve": "./node_modules/.bin/http-server -p 8080",
-    "dev": "webpack-dev-server --progress --colors --port 8090"
+    "webpack": "node webpack.js",
+    "api": "node crud.js"
   },
   "author": "Ian Nicholas",
   "license": "ISC",
   "dependencies": {
     "babel-preset-react": "^6.5.0",
-    "http-server": "^0.9.0",
+    "hapi": "^13.3.0",
     "lodash": "^4.10.0",
     "node-uuid": "^1.4.7",
     "normalize-css": "^2.3.1",
@@ -29,6 +30,7 @@
   "devDependencies": {
     "css-loader": "^0.23.1",
     "extract-text-webpack-plugin": "^1.0.1",
+    "http-server": "^0.9.0",
     "jsx-loader": "^0.13.2",
     "less": "^2.6.1",
     "less-loader": "^2.2.3",
